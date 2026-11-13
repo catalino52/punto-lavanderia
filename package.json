@@ -1,0 +1,40 @@
+{
+  "name": "punto-lavanderia",
+  "version": "1.0.0",
+  "description": "Laundry Management Application",
+  "private": true,
+  "scripts": {
+    "start": "concurrently \"cd backend && npm run start\" \"cd frontend && npm run start\"",
+    "start:dev": "concurrently \"cd backend && npm run start:dev\" \"cd frontend && npm run dev\"",
+    "start:prod": "concurrently \"cd backend && npm run start:prod\" \"cd frontend && npm run start\"",
+    "install": "concurrently \"cd backend && npm install\" \"cd frontend && npm install\"",
+    "build": "concurrently \"cd backend && npm run build\" \"cd frontend && npm run build\"",
+    "frontend:dev": "cd frontend && npm run dev",
+    "backend:dev": "cd backend && npm run start:dev",
+    "dev": "concurrently \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "laundry",
+    "management",
+    "business",
+    "nextjs",
+    "nestjs",
+    "postgresql",
+    "react",
+    "typescript"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/catalino52/punto-lavanderia.git"
+  },
+  "author": "Laundry Systems Team",
+  "license": "MIT",
+  "dependencies": {
+    "@mui/lab": "^7.0.0-beta.10",
+    "concurrently": "^8.2.0"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}
