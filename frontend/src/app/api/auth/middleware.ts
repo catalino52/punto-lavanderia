@@ -7,7 +7,7 @@ import { verifyToken, parseAuthHeader } from './jwt';
  * @param request The incoming request
  * @returns The response or null if authentication is successful
  */
-export function authMiddleware(request: NextRequest): NextResponse | null {
+export async function authMiddleware(request: NextRequest): Promise<NextResponse | null> {
   // Get the Authorization header
   const authHeader = request.headers.get('Authorization');
   
@@ -23,7 +23,7 @@ export function authMiddleware(request: NextRequest): NextResponse | null {
   }
   
   // Verify the token
-  const payload = verifyToken(token);
+  const payload = await verifyToken(token);
   
   // If token verification fails, return 401 Unauthorized
   if (!payload) {
@@ -44,12 +44,12 @@ export function authMiddleware(request: NextRequest): NextResponse | null {
  * @param allowedRoles Array of allowed roles
  * @returns The response or null if authorization is successful
  */
-export function roleMiddleware(
+export async function roleMiddleware(
   request: NextRequest, 
   allowedRoles: string[]
-): NextResponse | null {
+): Promise<NextResponse | null> {
   // First check authentication
-  const authResult = authMiddleware(request);
+  const authResult = await authMiddleware(request);
   if (authResult) {
     return authResult;
   }
@@ -67,7 +67,7 @@ export function roleMiddleware(
   }
   
   // Verify the token and get payload
-  const payload = verifyToken(token);
+  const payload = await verifyToken(token);
   
   // This should never happen since authMiddleware already checked
   if (!payload) {

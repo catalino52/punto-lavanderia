@@ -2,9 +2,11 @@ import { NextRequest, NextResponse } from 'next/server';
 import { authMiddleware } from '../auth/middleware';
 import { verifyToken, parseAuthHeader } from '../auth/jwt';
 
+export const runtime = 'nodejs';
+
 export async function GET(request: NextRequest) {
   // Check if the user is authenticated
-  const authResult = authMiddleware(request);
+  const authResult = await authMiddleware(request);
   if (authResult) {
     return authResult; // Return 401 if authentication failed
   }
@@ -12,7 +14,7 @@ export async function GET(request: NextRequest) {
   // Get user info from token
   const authHeader = request.headers.get('Authorization');
   const token = parseAuthHeader(authHeader || '');
-  const payload = verifyToken(token!); // Non-null assertion is safe here because authMiddleware already checked
+  const payload = token ? await verifyToken(token) : null;
 
   return NextResponse.json({
     success: true,
@@ -27,7 +29,7 @@ export async function GET(request: NextRequest) {
 
 export async function POST(request: NextRequest) {
   // Check if the user is authenticated
-  const authResult = authMiddleware(request);
+  const authResult = await authMiddleware(request);
   if (authResult) {
     return authResult; // Return 401 if authentication failed
   }

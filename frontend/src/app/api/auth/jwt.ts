@@ -1,9 +1,10 @@
-import jwt from 'jsonwebtoken';
+import { SignJWT, jwtVerify } from 'jose';
 
 // In a real application, this should be set as an environment variable
 // and kept secret - never hardcoded like this
-const JWT_SECRET = process.env.JWT_SECRET || 'laundry-app-secret-key-change-this-in-production';
-const JWT_EXPIRES_IN = '24h'; // Token expires in 24 hours
+const JWT_SECRET = new TextEncoder().encode(
+  process.env.JWT_SECRET || 'laundry-app-secret-key-change-this-in-production'
+);
 
 export interface JwtPayload {
   userId: string;
@@ -14,16 +15,24 @@ export interface JwtPayload {
 /**
  * Generate a JWT token for a user
  */
-export function generateToken(payload: JwtPayload): string {
-  return jwt.sign(payload, JWT_SECRET, { expiresIn: JWT_EXPIRES_IN });
+export async function generateToken(payload: JwtPayload): Promise<string> {
+  return new SignJWT(payload)
+    .setProtectedHeader({ alg: 'HS256' })
+    .setIssuedAt()
+    .setExpirationTime('24h')
+    .sign(JWT_SECRET);
 }
 
 /**
  * Verify a JWT token
  */
-export function verifyToken(token: string): JwtPayload | null {
+export async function verifyToken(token: string): Promise<JwtPayload | null> {
   try {
-    return jwt.verify(token, JWT_SECRET) as JwtPayload;
+    const { payload } = await jwtVerify(token, JWT_SECRET);
+    if (typeof payload.userId !== 'string' || typeof payload.username !== 'string' || typeof payload.role !== 'string') {
+      return null;
+    }
+    return { userId: payload.userId, username: payload.username, role: payload.role };
   } catch (error) {
     console.error('JWT verification failed:', error);
     return null;
