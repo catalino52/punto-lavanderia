@@ -5,8 +5,7 @@ import {
   CallHandler,
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
-import * as compression from 'compression';
+import compression = require('compression');
 
 @Injectable()
 export class CompressionInterceptor implements NestInterceptor {
