@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { format } from 'date-fns';
 import { es } from 'date-fns/locale';
@@ -84,7 +84,7 @@ const services = [
   },
 ];
 
-export default function CreateOrderPage() {
+function CreateOrderContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const dateParam = searchParams.get('date');
@@ -563,3 +563,11 @@ export default function CreateOrderPage() {
     </div>
   );
 } 
+
+export default function CreateOrderPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen p-6">Cargando...</div>}>
+      <CreateOrderContent />
+    </Suspense>
+  );
+}

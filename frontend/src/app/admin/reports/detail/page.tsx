@@ -82,7 +82,7 @@ const financialDetails = [
   },
 ];
 
-export default function ReportDetailPage() {
+function ReportDetailContent() {
   const searchParams = useSearchParams();
   const date = searchParams?.get('date') || '2023-03-01';
   const type = searchParams?.get('type') || 'financial';
@@ -302,3 +302,11 @@ export default function ReportDetailPage() {
     </Card>
   );
 } 
+
+export default function ReportDetailPage() {
+  return (
+    <React.Suspense fallback={<div>Cargando...</div>}>
+      <ReportDetailContent />
+    </React.Suspense>
+  );
+}

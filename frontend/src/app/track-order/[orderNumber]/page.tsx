@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useParams, useSearchParams, useRouter } from 'next/navigation';
 import { 
   ArrowLeft, 
@@ -79,7 +79,7 @@ const paymentStatusInfo = {
   }
 };
 
-export default function TrackOrderPage() {
+function TrackOrderContent() {
   const params = useParams();
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -458,3 +458,11 @@ export default function TrackOrderPage() {
     </div>
   );
 } 
+
+export default function TrackOrderPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen p-6">Cargando...</div>}>
+      <TrackOrderContent />
+    </Suspense>
+  );
+}

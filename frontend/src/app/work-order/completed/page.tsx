@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { Suspense, useEffect, useState } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { getOrderById } from '@/lib/orders';
@@ -9,7 +9,7 @@ import { es } from 'date-fns/locale';
 import { CheckCircle, Clock, Printer } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
-export default function OrderCompletedPage() {
+function OrderCompletedContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const [order, setOrder] = useState<any>(null);
@@ -255,3 +255,11 @@ export default function OrderCompletedPage() {
     </div>
   );
 } 
+
+export default function OrderCompletedPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen p-6">Cargando...</div>}>
+      <OrderCompletedContent />
+    </Suspense>
+  );
+}
