@@ -39,13 +39,6 @@ export class AuthService {
         throw new UnauthorizedException('Usuario o contraseña incorrectos.');
       }
 
-      // Log user details for debugging
-      console.log('[AuthService] User found:', {
-        id: user.id,
-        username: user.username,
-        role: user.role
-      });
-
       // Generate JWT token
       const payload = { 
         sub: user.id, 
@@ -53,12 +46,8 @@ export class AuthService {
         role: user.role 
       };
       
-      // Log JWT payload for debugging
-      console.log('[AuthService] JWT payload:', payload);
-      
       // Generate the token
       const token = this.jwtService.sign(payload);
-      console.log(`[AuthService] Token generated for ${username} (first 15 chars): ${token.substring(0, 15)}...`);
       
       // Return user and token (excluding password)
       const { password: _, ...userResponse } = user;
@@ -78,7 +67,7 @@ export class AuthService {
   }
 
   async register(registerDto: RegisterDto) {
-    const { username, email, password, name, role } = registerDto;
+    const { username, email, password, name } = registerDto;
 
     try {
       // Validate required fields
@@ -114,7 +103,7 @@ export class AuthService {
         email,
         password: hashedPassword,
         name,
-        role: role || 'staff',
+        role: 'staff',
         isActive: true,
       });
 
@@ -128,8 +117,6 @@ export class AuthService {
         username: savedUser.username,
         role: savedUser.role 
       };
-
-      console.log('[REGISTER] JWT payload:', payload);
 
       // Return user without password
       const { password: _, ...userResponse } = savedUser;
