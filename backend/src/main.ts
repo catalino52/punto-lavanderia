@@ -16,7 +16,7 @@ import { CorsInterceptor } from './interceptors/cors.interceptor';
 import { GlobalAuthGuard } from './guards/global-auth.guard';
 import { AdminRoleGuard } from './guards/admin-role.guard';
 import { RolesGuard } from './modules/auth/guards/roles.guard';
-import * as cookieParser from 'cookie-parser';
+import cookieParser = require('cookie-parser');
 
 // Load environment variables
 dotenv.config();

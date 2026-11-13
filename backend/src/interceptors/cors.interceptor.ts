@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 import { Observable } from 'rxjs';
 import { tap } from 'rxjs/operators';
-import * as cors from 'cors';
+import cors = require('cors');
 
 @Injectable()
 export class CorsInterceptor implements NestInterceptor {
