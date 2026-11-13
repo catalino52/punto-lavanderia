@@ -100,13 +100,6 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('api', app, document);
   
-  // Debug DB Connection
-  console.log('Información de conexión a la base de datos:');
-  console.log(`Servidor: ${process.env.DB_HOST}`);
-  console.log(`Puerto: ${process.env.DB_PORT}`);
-  console.log(`Base de datos: ${process.env.DB_DATABASE}`);
-  console.log(`Usuario: ${process.env.DB_USERNAME}`);
-
   // Get port from config
   const port = Number(configService.get<string>('PORT', '3001'));
   if (!Number.isInteger(port) || port < 1 || port > 65535) {
